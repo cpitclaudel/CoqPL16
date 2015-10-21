@@ -33,6 +33,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{filecontents}
 \usepackage{hyperref}
+\usepackage[note]{marginote} % remove before sending.
 
 \begin{filecontents}{workshop.bib}
 @Manual{Coq,
@@ -61,6 +62,9 @@
 }
 \end{filecontents}
 
+\usepackage{xspace}
+% To have the same capitalization everywhere
+\newcommand{\proofg}{\emph{Proof General}\xspace}
 \begin{document}
 
 \special{papersize=8.5in,11in}
@@ -88,17 +92,17 @@
 \title{Company-Coq: Taking Proof General one step closer to a real IDE}
 \subtitle{A session on using Proof General and its new extension to write proofs more efficiently}
 
-\authorinfo{ClÃ©ment Pit-Claudel}
+\authorinfo{Clément Pit-Claudel}
            {MIT CSAIL}
            {cpitcla@mit.edu}
 \authorinfo{Pierre Courtieu}
-           {CNAM, Lab. CÃ©dric}
+           {CNAM, Lab. Cédric}
            {pierre.courtieu@cnam.fr}
 
 \maketitle
 
 \begin{abstract}
-\texttt{Company-Coq} is a new Emacs package that extends \emph{Proof General} with a contextual auto-completion engine for Coq proofs and a many additional facilities to make writing proofs easier and more efficient. Beyond fuzzy auto-completion of tactics, options, module names, and local definitions, \texttt{company-coq} offers offline documentation and convenient snippets, plus display improvements and many other Coq-specific IDE features. The presentation will focus on a live demo of the system, with an emphasis on writing proofs in Emacs more efficiently.
+\texttt{Company-Coq} is a new Emacs package that extends \proofg with a contextual auto-completion engine for Coq proofs and a many additional facilities to make writing proofs easier and more efficient. Beyond fuzzy auto-completion of tactics, options, module names, and local definitions, \texttt{company-coq} offers offline documentation and convenient snippets, plus display improvements and many other Coq-specific IDE features. The presentation will focus on a live demo of the system, with an emphasis on writing proofs in Emacs more efficiently.
 \end{abstract}
 
 \category{D.2.6}{Software Engineering}{Programming Environments---Integrated environments}
@@ -109,7 +113,7 @@
 
 \section*{Introduction}
 
-Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two interactive development environments\footnote{There also exists Coq interfaces for vim and Eclipse, though their use does not seem very widespread}: \emph{Proof General}, an extension of of Emacs written by David Aspinall et al. \cite{ProofGeneral}, and \emph{CoqIDE}, a Coq-specific development environment written from scratch by members of the Coq team and generally touted as more beginner-friendly (mostly due \emph{Proof General}'s dependence on Emacs). Both are powerful tools for writing proofs, and significantly improve the experience of proof authors when compared to Coq's simple read-eval-print loop. Yet these tools do not offer advanced features typically found in IDEs like Eclipse or Visual Studio, such as in-editor documentation or context-sensitive completion. In addition, when advanced features are in fact available (Proof General, for example, does supports snippets and improved display of mathematics), they tend to lack discoverability: users do not explore the menus and miss convenient features that would make them more efficient.
+Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two interactive development environments\footnote{There also exists Coq interfaces for vim and Eclipse, though their use does not seem very widespread}: \proofg, an extension of of Emacs written by David Aspinall et al. \cite{ProofGeneral}, and \emph{CoqIDE}, a Coq-specific development environment written from scratch by members of the Coq team and generally touted as more beginner-friendly (mostly due \proofg's dependence on Emacs). Both are powerful tools for writing proofs, and significantly improve the experience of proof authors when compared to Coq's simple read-eval-print loop. Yet these tools do not offer advanced features typically found in IDEs like Eclipse or Visual Studio, such as in-editor documentation or context-sensitive completion. In addition, when advanced features are in fact available (Proof General, for example, does supports snippets and improved display of mathematics), they tend to lack discoverability: users do not explore the menus and miss convenient features that would make them more efficient.
 
 \section*{Overview of \texttt{company-coq}}
 
@@ -123,7 +127,39 @@ Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two inte
 
 \paragraph{Snippets} \ldots
 
-Since it is not part of the core \emph{Proof General}, \texttt{company-coq} can be used as a convenient area to test new IDE features before they are merged into the main editor, and discuss new development directions: for example, although \emph{Proof General} does support enhanced displaying of mathematics (non-destructively displaying \texttt{fun (n m: nat) => forall p, p <> n -> p >= m} as \texttt{$\lambda$ (n m: $\mathbb N$) $\Rightarrow$ $\forall$ p, p $\neq$ n $\rightarrow$ p $\geq$ m}), few users seem to know about that feature. \texttt{Company-Coq}, on the other hand, enables a similar feature by default, and we have not heard of many users disabling or complaining about it.
+\paragraph{Automatic indentation of bulleted proofs.} Coq proof of a
+lemma can be structure with \emph{bullets} and curly brackets. This
+makes proofs easier to read and maintain. Thanks to the
+\texttt{smie}\marginote{citer Stefan Monnier?} indentation package,
+\proofg implements an indentation routine based on structuring
+commands which makes proofs easier to format.
+
+\paragraph{Automatic named introduction and ``as'' close.} Controlling
+the names of hypothesis created by tactic is an important feature
+regarding maintainability of scripts. The \texttt{intros} tactic
+allows to give name to the introduced hypothesis. \texttt{Company-Coq}
+makes use of \proofg \emph{smart intros} feature to allow for
+automatic filling of these names. In the same spirit some tactics come
+with the ability to name the created hypothesis (\texttt{induction ...
+  as ..., inversion ... as ..., \ldots}) \proofg comes with a facility
+to automatically generate the \texttt{as} closes and
+\texttt{Company-Coq}\marginote{\`a implanter/changer} bring this
+feature to the user as an auto-completion of the keyword \texttt{as!}.
+
+
+
+\paragraph{Automatic recompilation at Require.} When developping a
+proof, one has to deal with several inter-dependent files. \proofg,
+thanks to a contribution of Hendrik Tews, can deal with recompilation
+process automatically each time it reaches a \texttt{Require} command
+by computing the dependencies of files and launching compilation on
+the fly.
+% Credit Hendrik Tews.
+
+\paragraph{others} \ldots
+% 
+
+Since it is not part of the core \emph{Proof General}, \texttt{company-coq} can be used as a convenient area to test new IDE features before they are merged into the main editor, and discuss new development directions: for example, although \emph{Proof General} does support enhanced displaying of mathematics (non-destructively displaying \texttt{fun (n m: nat) => forall p, p <> n -> p >= m} as \texttt{$\lambda$ (n m: $\mathbb N$) $\Rightarrow$ $\forall$ p, p $\neq$ n $\rightarrow$ p $\geq$ m}), few users seem to know about that feature. \texttt{Company-Coq}, on the other hand, enables a similar feature by default, and we have not heard of many users disabling or complaining about it\marginote{reformulate in more positive way?}.
 
 \section*{Workshop description}
 
