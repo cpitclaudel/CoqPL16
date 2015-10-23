@@ -136,20 +136,18 @@
 
 \category{D.2.6}{Software Engineering}{Programming Environments---Integrated environments}
 
-\terms Verification
-
 \keywords IDE, documentation, proof engineering, user experience
 
 \section*{Introduction}
 
-Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two interactive development environments\footnote{There also exists Coq interfaces for vim and Eclipse, though their use does not seem very widespread.}: \emph{\proofg}, an extension of of Emacs written by David Aspinall \cite{ProofGeneral}, and \emph{CoqIDE}, a Coq-specific development environment written from scratch by members of the Coq team and generally touted as more beginner-friendly (mostly due \proofg's dependence on Emacs). Both are powerful tools for writing proofs, and significantly improve the experience of proof authors when compared to Coq's simple read-eval-print loop. Yet these tools do not offer advanced features typically found in IDEs, such as in-editor documentation or context-sensitive completion. In addition, when advanced features are in fact available (\proofg, for example, does supports snippets and improved display of mathematics), they tend to lack discoverability: users do not explore the menus and miss convenient features that would make them more efficient.
+Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two interactive development environments\footnote{There also exist Coq interfaces for vim and Eclipse, though their use does not seem very widespread.}: \emph{\proofg}, an extension of Emacs written by David Aspinall \cite{ProofGeneral}, and \emph{CoqIDE}, a Coq-specific development environment written from scratch by members of the Coq team and generally touted as more beginner-friendly (mostly due to \proofg's dependence on Emacs). Both are powerful tools for writing proofs, and significantly improve the experience of proof authors when compared to Coq's simple read-eval-print loop. Yet these tools do not offer advanced features typically found in IDEs, such as in-editor documentation or context-sensitive completion. In addition, when advanced features are in fact available (\proofg, for example, does supports snippets and improved display of mathematics), they tend to lack discoverability: users do not explore the menus and miss convenient features that would make them more efficient.
 
 \href{https://github.com/cpitclaudel/company-coq/}{\texttt{Company-Coq}} is a new Emacs package that attempts to fix some of these limitations: it extends \proofg with many advanced IDE features (fuzzy completion, various Coq-specific snippets, and in-editor documentation for most of Coq's 2000-odd tactics, options, and errors), and it solves the discoverability issue by taking an ``all-on'' approach: the default distribution has most features automatically enabled\footnote{For example, although \proofg does support enhanced displaying of mathematics (non-destructively displaying \texttt{fun (n m: nat) => forall p, p <> n -> p >= m} as \texttt{$\lambda$ (n m: $\mathbb{N}$) $\Rightarrow$ $\forall$ p, p $\neq$ n $\rightarrow$ p $\geq$ m}), few users seem to know about this feature. \texttt{Company-Coq}, on the other hand, enables a similar feature by default, and most users seem pleased with it.}. In addition, \texttt{company-coq} comes with a comprehensive tutorial that showcases most of its features.
 Since it is not part of the core \emph{\proofg}, \texttt{company-coq} can serve as a convenient experimentation area with new features and development directions, before they are merged into \proofg or CoqIDE.
 
 \section*{Proposal description}
 
-The presentation will consist in a quick run through \texttt{company-coq} features, and a tutorial on using these and other \proofg features to write proofs more efficiently, with emphasis on the lemma extraction feature. The workshop will also be a good occasion to showcase some features that \proofg inherits from Emacs, to discuss how much of this work could be used to enhance other Coq interfaces, and to ponder about desirable features for proof-oriented development environments.
+The presentation will consist of a quick run through \texttt{company-coq}'s features, and a tutorial on using these and other \proofg features to write proofs more efficiently with emphasis on the lemma extraction feature. The workshop will also be a good occasion to showcase some features that \proofg inherits from Emacs, to discuss how much of this work could be used to enhance other Coq interfaces, and to ponder about desirable features for proof-oriented development environments.
 
 \section*{Overview of some features of \texttt{company-coq}}
 
@@ -160,7 +158,7 @@ The presentation will consist in a quick run through \texttt{company-coq} featur
   \includegraphics[width=\linewidth]{apply-in-xxl-2.png}
 \end{figure}
 
-\paragraph{Offline documentation lookups} Part of the development of \texttt{company-coq} involved cross-referencing tactics and options from the user manual; this allows \texttt{company-coq} to display documentation for most completion entries, without querying INRIA's website\footnote{The list of tactic templates, and the associated documentation, could be useful to other editors.}:
+\paragraph{Offline documentation} Part of the development of \texttt{company-coq} involved cross-referencing tactics and options from the user manual; this allows \texttt{company-coq} to display documentation for most completion entries, without querying INRIA's website\footnote{The list of tactic templates, and the associated documentation, could be useful to other editors.}:
 
 \begin{figure}[H]
   \centering
@@ -194,7 +192,7 @@ The key here is the \keys{\Alt+\shift+\return} shortcut, which introduces the
 \end{verbatim}
 pattern, leaving holes that the user can navigate between with \texttt{TAB} in place of each \texttt{\_}.
 
-\paragraph{Automatic named introduction} Scripts that depend on the name of hypotheses can often be made more robust by choosing names explicitly: \texttt{company-coq} leverages an existing feature of \proofg to let the user type
+\paragraph{Automatic named introduction} Scripts that depend on the names of hypotheses can often be made more robust by choosing names explicitly: \texttt{company-coq} leverages an existing feature of \proofg to let the user type
 \begin{almostverbatim}
   \verb|intros! |\keys{\return}
 \end{almostverbatim}
