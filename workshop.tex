@@ -49,6 +49,14 @@
             linkcolor=blue,
             pdfborder={0 0 0}}
 
+\newlength{\almostverbatimindentation}
+\newenvironment{almostverbatim}{%
+\sbox0{\texttt{\global\almostverbatimindentation=2\fontdimen2\font}}
+\\[\topsep]\hspace*{\almostverbatimindentation}\begin{minipage}{0.94\linewidth}\setlength{\baselineskip}{1.5\baselineskip}%
+}{%
+\end{minipage}\\[\topsep]
+}
+
 \begin{filecontents}{workshop.bib}
 @Manual{Coq,
   title =        {The {Coq} Proof Assistant Reference Manual},
@@ -174,12 +182,12 @@ The presentation will consist in a quick run through \texttt{company-coq} featur
   | [ H: ?a /\ ?b |- ?a ] => destruct H; assumption
   end
 \end{verbatim}
-the user only needs to type the following commands:\\[\topsep]
-\verb|  |\begin{minipage}{0.94\linewidth}\setlength{\baselineskip}{1.5\baselineskip}
+the user only needs to type the following commands:
+\begin{almostverbatim}
   \verb|m g w | \keys{\return}\\
   \keys{\Alt+\shift+\return} \verb| | \keys{\tab} \verb| ?a /\ ?b | \keys{\tab} \verb| ?a | \keys{\tab}\\
   \verb|destr | \keys{\return} \verb| H; ass | \keys{\return}
-\end{minipage}\\[\topsep]
+\end{almostverbatim}
 The key here is the \keys{\Alt+\shift+\return} shortcut, which introduces the
 \begin{verbatim}
   | [ H: _ |- _ ] => _
@@ -187,9 +195,9 @@ The key here is the \keys{\Alt+\shift+\return} shortcut, which introduces the
 pattern, leaving holes that the user can navigate between with \texttt{TAB} in place of each \texttt{\_}.
 
 \paragraph{Automatic named introduction} Scripts that depend on the name of hypotheses can often be made more robust by choosing names explicitly: \texttt{company-coq} leverages an existing feature of \proofg to let the user type
-\begin{verbatim}
-  intros! RET
-\end{verbatim}
+\begin{almostverbatim}
+  \verb|intros! |\keys{\return}
+\end{almostverbatim}
 to create an invocation of the \texttt{intros} tactic that explicitly mentions all introduced variables, using Coq's \emph{Smart intros} feature.
 
 \section*{New features of \proofg}
