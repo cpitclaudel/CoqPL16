@@ -96,10 +96,10 @@
                                   % short abstracts)
 
 \titlebanner{}        % These are ignored unless
-\preprintfooter{TODO}   % 'preprint' option specified.
+\preprintfooter{Company-Coq: Taking Proof General one step closer to a real IDE}   % 'preprint' option specified.
 
 \title{Company-Coq: Taking Proof General one step closer to a real IDE}
-\subtitle{A session on using Proof General and its new extension to write proofs more efficiently}
+\subtitle{A tutorial on using Proof General and its new extension to write proofs more efficiently}
 
 \authorinfo{Clément Pit-Claudel}
            {MIT CSAIL}
@@ -111,14 +111,14 @@
 \maketitle
 
 \begin{abstract}
-\texttt{Company-Coq} is a new Emacs package that extends \proofg with a contextual auto-completion engine for Coq proofs and a many additional facilities to make writing proofs easier and more efficient. Beyond fuzzy auto-completion of tactics, options, module names, and local definitions, \texttt{company-coq} offers offline documentation and convenient snippets, plus display improvements and many other Coq-specific IDE features. The presentation will focus on a live demo of the system, with an emphasis on writing proofs in Emacs more efficiently.
+\texttt{Company-Coq} is a new Emacs package that extends \proofg with a contextual auto-completion engine for Coq proofs and a many additional facilities to make writing proofs easier and more efficient. Beyond fuzzy auto-completion of tactics, options, module names, and local definitions, \texttt{company-coq} offers offline in-editor documentation, convenient snippets, and many other Coq-specific IDE features. The presentation will focus on a live demo of the system with an emphasis on writing proofs in Emacs more efficiently, and a discussion of desirable features of proof-oriented development environments.
 \end{abstract}
 
 \category{D.2.6}{Software Engineering}{Programming Environments---Integrated environments}
 
 \terms Verification
 
-\keywords IDE, documentation, proof engineering
+\keywords IDE, documentation, proof engineering, user experience
 
 \section*{Introduction}
 
@@ -136,7 +136,14 @@ The workshop will consist in a quick run through \texttt{company-coq} features, 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{apply-in.png}
+  \includegraphics[width=\linewidth]{apply-in-xxl.png}
+\end{figure}
+
+\paragraph{Offline documentation lookups} Part of the development of \texttt{company-coq} involved cross-referencing all tactics from the user manual; this, in turns, allows \texttt{company-coq} to display documentation for most completion entries:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{docs-xxl.png}
 \end{figure}
 
 \paragraph{Lemma extraction} At any point in a proof, users may choose to extract the current goal, including relevant hypotheses, to a separate lemma. Instead of painstakingly copy-pasting the relevant hypotheses, \texttt{company-coq} offers a convenient interface to pick relevant hypotheses and generate the statement of the new lemma.
@@ -145,7 +152,7 @@ The workshop will consist in a quick run through \texttt{company-coq} features, 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{inline-docs.png}
+  \includegraphics[width=\linewidth]{inline-docs-xxl.png}
 \end{figure}
 
 \paragraph{Snippets} \texttt{Company-Coq} connects with \texttt{YASnippet} to make certain common Coq patterns quicker to write. For example, to write
@@ -166,7 +173,7 @@ the key here is the \texttt{M-S-RET} shortcut, which introduces the
 \end{verbatim}
 pattern, leaving holes that the user can navigate between with \texttt{TAB} in place of each \texttt{\_}.
 
-\paragraph{Automatic named introduction and ``as'' clause} Scripts that depend on the name of hypotheses can often be name more robust by choosing names explicitly: \texttt{company-coq} leverages an existing feature of Proof General to let the user type
+\paragraph{Automatic named introduction} Scripts that depend on the name of hypotheses can often be made more robust by choosing names explicitly: \texttt{company-coq} leverages an existing feature of \proofg to let the user type
 \begin{verbatim}
 intros! RET
 \end{verbatim}
