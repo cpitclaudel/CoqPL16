@@ -36,6 +36,9 @@
 \usepackage{graphicx}
 \usepackage{float}
 
+\usepackage[os=win]{menukeys}
+\renewmenumacro{\keys}{shadowedroundedkeys}
+
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={},
@@ -131,28 +134,29 @@
 
 \section*{Introduction}
 
-Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two interactive development environments\footnote{There also exists Coq interfaces for vim and Eclipse, though their use does not seem very widespread.}: \emph{\proofg}, an extension of of Emacs written by David Aspinall \cite{ProofGeneral}, and \emph{CoqIDE}, a Coq-specific development environment written from scratch by members of the Coq team and generally touted as more beginner-friendly (mostly due \proofg's dependence on Emacs). Both are powerful tools for writing proofs, and significantly improve the experience of proof authors when compared to Coq's simple read-eval-print loop. Yet these tools do not offer advanced features typically found in IDEs like Eclipse or Visual Studio, such as in-editor documentation or context-sensitive completion. In addition, when advanced features are in fact available (\proofg, for example, does supports snippets and improved display of mathematics), they tend to lack discoverability: users do not explore the menus and miss convenient features that would make them more efficient.
+Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two interactive development environments\footnote{There also exists Coq interfaces for vim and Eclipse, though their use does not seem very widespread.}: \emph{\proofg}, an extension of of Emacs written by David Aspinall \cite{ProofGeneral}, and \emph{CoqIDE}, a Coq-specific development environment written from scratch by members of the Coq team and generally touted as more beginner-friendly (mostly due \proofg's dependence on Emacs). Both are powerful tools for writing proofs, and significantly improve the experience of proof authors when compared to Coq's simple read-eval-print loop. Yet these tools do not offer advanced features typically found in IDEs, such as in-editor documentation or context-sensitive completion. In addition, when advanced features are in fact available (\proofg, for example, does supports snippets and improved display of mathematics), they tend to lack discoverability: users do not explore the menus and miss convenient features that would make them more efficient.
 
-\texttt{Company-Coq} is a new Emacs package (distributed on \href{http://melpa.org/#/company-coq}{MELPA} and hosted on \href{https://github.com/cpitclaudel/company-coq/}{GitHub}) that attempts to fix some of these limitations: it extends \proofg with many advanced IDE features (such as fuzzy completion, various Coq-specific snippets, and in-editor documentation for most of Coq's 2000-odd tactics, options, and errors), and it solves the discoverability issue by taking an ``all-on'' approach where the default distribution has most features automatically enabled. In addition, \texttt{company-coq} comes with a comprehensive tutorial that showcases most of its features.
+\href{https://github.com/cpitclaudel/company-coq/}{\texttt{Company-Coq}} is a new Emacs package that attempts to fix some of these limitations: it extends \proofg with many advanced IDE features (fuzzy completion, various Coq-specific snippets, and in-editor documentation for most of Coq's 2000-odd tactics, options, and errors), and it solves the discoverability issue by taking an ``all-on'' approach: the default distribution has most features automatically enabled\footnote{For example, although \proofg does support enhanced displaying of mathematics (non-destructively displaying \texttt{fun (n m: nat) => forall p, p <> n -> p >= m} as \texttt{$\lambda$ (n m: $\mathbb{N}$) $\Rightarrow$ $\forall$ p, p $\neq$ n $\rightarrow$ p $\geq$ m}), few users seem to know about this feature. \texttt{Company-Coq}, on the other hand, enables a similar feature by default, and most users seem pleased with it.}. In addition, \texttt{company-coq} comes with a comprehensive tutorial that showcases most of its features.
+Since it is not part of the core \emph{\proofg}, \texttt{company-coq} can serve as a convenient experimentation area with new features and development directions, before they are merged into \proofg or CoqIDE.
 
-\section*{Workshop description}
+\section*{Proposal description}
 
-The workshop will consist in a quick run through \texttt{company-coq} features, and a tutorial on using these and other \proofg features to write proofs more efficiently. We will put emphasis on the lemma extraction feature, showing how it can be used to structure proof developments more clearly. The workshop will also be a good occasion to showcase some features that \proofg inherits from Emacs, to discuss how much of this work could be used to enhance other Coq interfaces\footnote{In particular, the development of \texttt{company-coq} included the annotation of Coq's user manual to extract tactic templates and the associated documentation; the resulting list of tactics could be useful to other editors.}, and to ponder about desirable features for proof-oriented development environments.
+The presentation will consist in a quick run through \texttt{company-coq} features, and a tutorial on using these and other \proofg features to write proofs more efficiently, with emphasis on the lemma extraction feature. The workshop will also be a good occasion to showcase some features that \proofg inherits from Emacs, to discuss how much of this work could be used to enhance other Coq interfaces, and to ponder about desirable features for proof-oriented development environments.
 
 \section*{Overview of some features of \texttt{company-coq}}
 
-\paragraph{Context-sensitive autocompletion with holes} \texttt{Company-Coq} implements a number of backends for the \href{https://company-mode.github.io/}{\emph{CompleteAnything}} Emacs package (\texttt{company}). Typing \texttt{appl{\kern0.5pt}in} therefore suggests variants of the apply tactic (the \texttt{@\{\ldots\}} marks are holes):
+\paragraph{Context-sensitive autocompletion with holes} \texttt{Company-Coq} implements a number of backends for the \href{https://company-mode.github.io/}{\emph{CompleteAnything}} Emacs package (\texttt{company}). Typing \texttt{app{\kern0.5pt}in} therefore suggests variants of the apply tactic (the \texttt{@\{\ldots\}} marks are holes):
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{apply-in-xxl.png}
+  \includegraphics[width=\linewidth]{apply-in-xxl-2.png}
 \end{figure}
 
-\paragraph{Offline documentation lookups} Part of the development of \texttt{company-coq} involved cross-referencing tactics and options from the user manual; this, in turns, allows \texttt{company-coq} to display documentation for most completion entries, without querying INRIA's website:
+\paragraph{Offline documentation lookups} Part of the development of \texttt{company-coq} involved cross-referencing tactics and options from the user manual; this allows \texttt{company-coq} to display documentation for most completion entries, without querying INRIA's website\footnote{The list of tactic templates, and the associated documentation, could be useful to other editors.}:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{docs-xxl-trunc.png}
+  \includegraphics[width=\linewidth]{docs-xxl-2.png}
 \end{figure}
 
 \paragraph{Lemma extraction} At any point in a proof, users may choose to extract the current goal, including some hypotheses, to a separate lemma. Instead of painstakingly copy-pasting bits of the proof context, \texttt{company-coq} offers a convenient interface to pick hypotheses and generate the statement of the extracted lemma.
@@ -161,7 +165,7 @@ The workshop will consist in a quick run through \texttt{company-coq} features, 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{inline-docs-xxl.png}
+  \includegraphics[width=\linewidth]{inline-docs-xxl-2.png}
 \end{figure}
 
 \paragraph{Snippets} \texttt{Company-Coq} connects with \texttt{YASnippet} to make certain common Coq patterns quicker to write. For example, to write
@@ -170,13 +174,13 @@ The workshop will consist in a quick run through \texttt{company-coq} features, 
   | [ H: ?a /\ ?b |- ?a ] => destruct H; assumption
   end
 \end{verbatim}
-the user only needs to type the following commands:
-\begin{verbatim}
-  mgw RET
-  M-S-RET TAB ?a /\ ?b TAB ?a TAB
-  destr RET H; ass RET
-\end{verbatim}
-the key here is the \texttt{M-S-RET} shortcut, which introduces the
+the user only needs to type the following commands:\\[\topsep]
+\verb|  |\begin{minipage}{0.94\linewidth}\setlength{\baselineskip}{1.5\baselineskip}
+  \verb|m g w | \keys{\return}\\
+  \keys{\Alt+\shift+\return} \verb| | \keys{\tab} \verb| ?a /\ ?b | \keys{\tab} \verb| ?a | \keys{\tab}\\
+  \verb|destr | \keys{\return} \verb| H; ass | \keys{\return}
+\end{minipage}\\[\topsep]
+The key here is the \keys{\Alt+\shift+\return} shortcut, which introduces the
 \begin{verbatim}
   | [ H: _ |- _ ] => _
 \end{verbatim}
@@ -200,7 +204,7 @@ A number of new \proofg features are also useful for proof development:
 % In the same spirit some tactics come with the ability to name the created hypothesis (\texttt{induction ... as ..., inversion ... as ..., \ldots}) \proofg comes with a facility to automatically generate the \texttt{as} closes and \texttt{Company-Coq}\marginote{\`a implanter/changer} bring this feature to the user as an auto-completion of the keyword \texttt{as!}.
 
 \section*{Conclusion}
-Since it is not part of the core \emph{\proofg}, \texttt{company-coq} can be used as a convenient area to test new IDE features before they are merged into \proofg or CoqIDE, and to discuss new development directions\footnote{For example, although \proofg does support enhanced displaying of mathematics (non-destructively showing \texttt{fun (n m: nat) => forall p, p <> n -> p >= m} as \texttt{$\lambda$ (n m: $\mathbb N$) $\Rightarrow$ $\forall$ p, p $\neq$ n $\rightarrow$ p $\geq$ m}), few users seem to know about that feature. \texttt{Company-Coq}, on the other hand, enables a similar feature by default, and most users seem pleased with it.}. \texttt{Company-Coq} has been well received by the community\footnote{At this time, \texttt{company-coq} has accumulated 700 downloads.}; we hope that the CoqPL workshop will be a good venue to discuss it, and more generally to discuss the development of new editor features enhancing the experience of authors of Coq programs and proofs.
+\texttt{Company-Coq} has been well received by the community\footnote{At this time, \texttt{company-coq} has accumulated \href{http://melpa.org/\#/company-coq}{700 downloads}.}; we hope that the CoqPL workshop will be a good venue to discuss it, and more generally to discuss the development of new editor features enhancing the experience of authors of Coq programs and proofs.
 
 \bibliographystyle{abbrvnat}
 \bibliography{workshop}
