@@ -1,0 +1,93 @@
+
+
+2015-11-11 11:14 GMT+01:00 CoqPL 2016 <coqpl2016@easychair.org>:
+> Dear Pierre,
+>
+> Please find below the reviews for you CoqPL submission entitled:
+>   Company-Coq: Taking Proof General one step closer to a real IDE.
+>
+> Best Regards,
+> Arthur Charguéraud
+>
+>
+> ----------------------- REVIEW 1 ---------------------
+> PAPER: 4
+> TITLE: Company-Coq: Taking Proof General one step closer to a real IDE
+> AUTHORS: Clément Pit-Claudel and Pierre Courtieu
+>
+>
+> ----------- REVIEW -----------
+> This abstract presents the Company-Coq emacs package, providing
+> better support for developing proofs and tactics over the
+> ProofGeneral mode. The purpose of the talk will be to demonstrate
+> how such a package can improve productivity while writing a script
+> including the many helpful features of the mode like autocompletion
+> and documentation search. I think this will make a great hands-on
+> talk and I'm looking forward to learn more about the mode.
+>
+> ----------------------- REVIEW 2 ---------------------
+> PAPER: 4
+> TITLE: Company-Coq: Taking Proof General one step closer to a real IDE
+> AUTHORS: Clément Pit-Claudel and Pierre Courtieu
+>
+> ----------- REVIEW -----------
+> (This review is signed as I am no longer comfortable with writing anonymous
+> reviews.)
+>
+> Company-Coq is an extension of Proof General, an Emacs mode to edit Coq files.
+> Company-Coq adds many features, mostly based on the auto-completion of
+> identifiers, the easy access to documentation, and the quick entering of
+> structured constructions using snippets. As all these features are very useful
+> to streamline proof development, I recommend this talk to be presented at the
+> workshop.
+>
+> Comments and questions:
+> - Point and click documentation, page 2: you could make clear that you need to
+>   click and hold to see the documentation.
+
+Ouais bon faisons ça. DONE
+
+
+REMARQUE pour Clément: En fait j'ai remarqué que si tu relache d'abord
+le control et après le bouton de la souris, le popup reste visible.
+C'est une feature?
+
+> - Question that could be addressed at the workshop: how much of the
+>   infrastructure under Company-Coq could be reused for or shared with CoqIDE?
+>   In other words, are there some components that are not specific to emacs
+>   that could be integrated upstream?
+
+Il faut effectivement préciser que ton travail sur la doc a été
+(complètement?) intégré à la doc de coq et que donc rien n'empêche
+coqide t'avoir la mm feature. Pour les template le principe de faire
+des print grammar+script aussi ça peut servir à d'autres.
+
+À DIRE AU WORKSHOP: À ta demande un effort d'homogénéisation de la doc
+devrait être fait (plutôt après la release de la 8.5 qui est
+imminente) pour permettre un parsing simple de la doc pour générer ce
+dont company-coq a besoin, ainsi que d'éventuels autres outils.
+
+
+> Alan Schmitt
+>
+>
+> ----------------------- REVIEW 3 ---------------------
+> PAPER: 4
+> TITLE: Company-Coq: Taking Proof General one step closer to a real IDE
+> AUTHORS: Clément Pit-Claudel and Pierre Courtieu
+>
+>
+> ----------- REVIEW -----------
+> This proposal clearly falls in the scope of the workshop.
+> I think a demo of the features of the tool would result in a great talk.
+>
+> It would be particularly interesting to make it clear, for each feature,
+> whether (1) it would be useful to reproduce in another text editor than
+> emacs, and (2) if any external tool or piece of code can be reused.
+
+même remarque qu'au-dessus.
+
+> It could be useful to save time at the end to present and discuss
+> with the audience possibilities for additional features.
+
+Oui c'est clair.
