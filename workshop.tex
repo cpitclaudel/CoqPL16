@@ -122,11 +122,11 @@
 \title{Company-Coq: Taking \proofg one step closer to a real IDE}
 \subtitle{A tutorial on using \proofg and its new extension to write proofs more efficiently}
 
-\authorinfo{Clément Pit-Claudel}
+\authorinfo{Cl\'ement Pit-Claudel}
            {MIT CSAIL}
            {cpitcla@mit.edu}
 \authorinfo{Pierre Courtieu}
-           {CNAM, Lab. Cédric}
+           {CNAM, Lab. C\'edric}
            {pierre.courtieu@cnam.fr}
 
 \maketitle
@@ -146,7 +146,7 @@ Users of the Coq Proof Assistant \cite{Coq} are roughly divided between two inte
 \href{https://github.com/cpitclaudel/company-coq/}{\texttt{Company-Coq}} is a new Emacs package that attempts to fix some of these limitations: it extends \proofg with many advanced IDE features (fuzzy completion, various Coq-specific snippets, and in-editor documentation for most of Coq's 2000-odd tactics, options, and errors), and it solves the discoverability issue by taking an ``all-on'' approach: the default distribution has most features automatically enabled\footnote{For example, although \proofg does support enhanced displaying of mathematics (non-destructively displaying \texttt{fun (n m: nat) => forall p, p <> n -> p >= m} as \texttt{$\lambda$ (n m: $\mathbb{N}$) $\Rightarrow$ $\forall$ p, p $\neq$ n $\rightarrow$ p $\geq$ m}), few users seem to know about this feature. \texttt{Company-Coq}, on the other hand, enables a similar feature by default, and most users seem pleased with it.}. In addition, \texttt{company-coq} comes with a comprehensive tutorial that showcases most of its features.
 Since it is not part of the core \emph{\proofg}, \texttt{company-coq} can serve as a convenient experimentation area with new features and development directions, before they are merged into \proofg or CoqIDE.
 
-\section*{Proposal description}
+\section*{Workshop description}
 
 The presentation will consist of a quick run through \texttt{company-coq}'s features, and a tutorial on using these and other \proofg features to write proofs more efficiently with emphasis on the lemma extraction feature. The workshop will also be a good occasion to showcase some features that \proofg inherits from Emacs, to discuss how much of this work could be used to enhance other Coq interfaces, and to ponder about desirable features for proof-oriented development environments.
 
@@ -164,18 +164,18 @@ The presentation will consist of a quick run through \texttt{company-coq}'s feat
 from the user manual; this allows \texttt{company-coq} to display
 documentation for most completion entries, without querying INRIA's
 website\footnote{The list of tactic templates, and the associated
-  documentation, could be useful to other editors.}.:
+  documentation, is extracted from the annotated manual into an index and a set of data files that could be useful to other editors.}.:
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{docs-xxl-2.png}
 \end{figure}
 
-\paragraph{Lemma extraction} At any point in a proof, users may choose to extract the current goal, including some hypotheses, to a separate lemma. Instead of painstakingly copy-pasting bits of the proof context, \texttt{company-coq} offers a convenient interface to pick hypotheses and generate the statement of the extracted lemma.
+\paragraph{Lemma extraction} At any point in a proof, users may choose to extract the current goal, including some hypotheses, to a separate lemma. Instead of painstakingly copy-pasting bits of the proof context, \texttt{company-coq} offers a convenient interface to pick hypotheses and generate the statement of the extracted lemma\footnote{The statement is produced by generalizing the hypotheses that the goal mentions and the ones that the user selected, using a small Ltac script.}.
 
-\paragraph{Point and click documentation} Clicking on an identifier
-while pressing the control key opens an inline documentation window
-releasing mouse button make the window disappear:
+\paragraph{Point and click documentation} Clicking on an identifier while
+pressing the control key opens an inline documentation window (which disappears
+when the mouse button is released):
 
 \begin{figure}[H]
   \centering
@@ -204,7 +204,7 @@ pattern, leaving holes that the user can navigate between with \texttt{TAB} in p
 \begin{almostverbatim}
   \verb|intros! |\keys{\return}
 \end{almostverbatim}
-to create an invocation of the \texttt{intros} tactic that explicitly mentions all introduced variables, using Coq's \emph{Smart intros} feature.
+to create an invocation of the \texttt{intros} tactic that explicitly mentions all introduced variables.
 
 \section*{New features of \proofg}
 
@@ -218,7 +218,7 @@ A number of new \proofg features are also useful for proof development:
 % In the same spirit some tactics come with the ability to name the created hypothesis (\texttt{induction ... as ..., inversion ... as ..., \ldots}) \proofg comes with a facility to automatically generate the \texttt{as} closes and \texttt{Company-Coq}\marginote{\`a implanter/changer} bring this feature to the user as an auto-completion of the keyword \texttt{as!}.
 
 \section*{Conclusion}
-\texttt{Company-Coq} has been well received by the community\footnote{At this time, \texttt{company-coq} has accumulated \href{http://melpa.org/\#/company-coq}{700 downloads}.}; we hope that the CoqPL workshop will be a good venue to discuss it, and more generally to discuss the development of new editor features enhancing the experience of authors of Coq programs and proofs.
+\texttt{Company-Coq} has been well received by the community\footnote{At this time, \texttt{company-coq} has accumulated \href{http://melpa.org/\#/company-coq}{750 downloads}.}, and we expect many of its features to find their way into other Coq development environments\footnote{Indeed, the architecture of company-coq should be amenable to such cross-pollination: none of its features are Emacs-specific, and the collection of pre-processing scripts that it relies on to offer documentation, completion and snippets is freely available (along with their output).}; we hope that the CoqPL workshop will be a good venue to discuss it, and more generally to discuss the development of new editor features enhancing the experience of authors of Coq programs and proofs.
 
 \bibliographystyle{abbrvnat}
 \bibliography{workshop}
