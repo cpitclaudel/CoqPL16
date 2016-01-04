@@ -152,11 +152,11 @@ The presentation will consist of a quick run through \texttt{company-coq}'s feat
 
 \section*{Overview of some features of \texttt{company-coq}}
 
-\paragraph{Context-sensitive autocompletion with holes} \texttt{Company-Coq} implements a number of backends for the \href{https://company-mode.github.io/}{\emph{CompleteAnything}} Emacs package (\texttt{company}). Typing \texttt{app{\kern0.5pt}in} therefore suggests variants of the apply tactic (the \texttt{@\{\ldots\}} marks are holes):
+\paragraph{Context-sensitive autocompletion with holes} \texttt{Company-Coq} implements a number of backends for the \href{https://company-mode.github.io/}{\emph{CompleteAnything}} Emacs package (\texttt{company}). Typing \texttt{app{\kern0.5pt}in} therefore suggests variants of the apply tactic (bold text indicates holes):
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{apply-in-xxl-2.png}
+  \includegraphics[width=\linewidth]{coq-pl-16-autocompletion.png}
 \end{figure}
 
 \paragraph{Offline documentation} Part of the development of
@@ -168,7 +168,7 @@ website\footnote{The list of tactic templates, and the associated
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{docs-xxl-2.png}
+  \includegraphics[width=\linewidth]{coq-pl-16-documentation.png}
 \end{figure}
 
 \paragraph{Lemma extraction} At any point in a proof, users may choose to extract the current goal, including some hypotheses, to a separate lemma. Instead of painstakingly copy-pasting bits of the proof context, \texttt{company-coq} offers a convenient interface to pick hypotheses and generate the statement of the extracted lemma\footnote{The statement is produced by generalizing the hypotheses that the goal mentions and the ones that the user selected, using a small Ltac script.}.
@@ -179,7 +179,7 @@ when the mouse button is released):
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{inline-docs-xxl-2.png}
+  \includegraphics[width=\linewidth]{coq-pl-16-point-and-click.png}
 \end{figure}
 
 \paragraph{Snippets} \texttt{Company-Coq} connects with \texttt{YASnippet} to make certain common Coq patterns quicker to write. For example, to write
