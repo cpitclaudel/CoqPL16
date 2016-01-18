@@ -20,7 +20,7 @@
 %-----------------------------------------------------------------------------
 
 
-\documentclass[preprint]{sigplanconf}
+\documentclass{sigplanconf}
 
 % The following \documentclass options may be useful:
 
@@ -97,6 +97,13 @@
 \newcommand{\proofg}{Proof General\xspace}
 \begin{document}
 
+\makeatletter
+\toappear{%
+  Licensed under GNU Free Documentation License \par
+  \noindent \textsl{\@conferencename}, \quad \@conferenceinfo. \par
+  \noindent \url{http://dx.doi.org/\@doi}}
+\makeatother
+
 \special{papersize=8.5in,11in}
 \setlength{\pdfpageheight}{\paperheight}
 \setlength{\pdfpagewidth}{\paperwidth}
@@ -104,7 +111,7 @@
 \conferenceinfo{CoqPL 2016}{January 23, 2016, St. Petersburg, Florida, United States}
 \copyrightyear{2016}
 % \copyrightdata{978-1-nnnn-nnnn-n/yy/mm}
-% \doi{nnnnnnn.nnnnnnn}
+\doi{10.5281/zenodo.44331}
 
 % Uncomment one of the following two, if you are not going for the 
 % traditional copyright transfer agreement.
@@ -132,7 +139,7 @@
 \maketitle
 
 \begin{abstract}
-\texttt{Company-Coq} is a new Emacs package that extends \proofg with a contextual auto-completion engine for Coq proofs and many additional facilities to make writing proofs easier and more efficient. Beyond fuzzy auto-completion of tactics, options, module names, and local definitions, \texttt{company-coq} offers offline in-editor documentation, convenient snippets, and multiple other Coq-specific IDE features. The presentation will focus on a live demo of the system with an emphasis on writing proofs in Emacs more efficiently, and a discussion of desirable features of proof-oriented development environments.
+\texttt{Company-Coq} is a new Emacs package that extends \proofg with a contextual auto-completion engine for Coq proofs and many additional facilities to make writing proofs easier and more efficient. Beyond fuzzy auto-completion of tactics, options, module names, and local definitions, \texttt{company-coq} offers offline in-editor documentation, convenient snippets, and multiple other Coq-specific IDE features. The system will be presented at CoqPL 2016, focusing on a live demo with an emphasis on writing proofs in Emacs more efficiently, and a discussion of desirable features of proof-oriented development environments.
 \end{abstract}
 
 \category{D.2.6}{Software Engineering}{Programming Environments---Integrated environments}
@@ -218,7 +225,7 @@ A number of new \proofg features are also useful for proof development:
 % In the same spirit some tactics come with the ability to name the created hypothesis (\texttt{induction ... as ..., inversion ... as ..., \ldots}) \proofg comes with a facility to automatically generate the \texttt{as} closes and \texttt{Company-Coq}\marginote{\`a implanter/changer} bring this feature to the user as an auto-completion of the keyword \texttt{as!}.
 
 \section*{Conclusion}
-\texttt{Company-Coq} has been well received by the community\footnote{At this time, \texttt{company-coq} has accumulated \href{http://melpa.org/\#/company-coq}{750 downloads}.}, and we expect many of its features to find their way into other Coq development environments\footnote{Indeed, the architecture of company-coq should be amenable to such cross-pollination: none of its features are Emacs-specific, and the collection of pre-processing scripts that it relies on to offer documentation, completion and snippets is freely available (along with their output).}; we hope that the CoqPL workshop will be a good venue to discuss it, and more generally to discuss the development of new editor features enhancing the experience of authors of Coq programs and proofs.
+\texttt{Company-Coq} has been well received by the community\footnote{At this time, \texttt{company-coq} has accumulated \href{http://melpa.org/\#/company-coq}{800 downloads}.}, and we expect many of its features to find their way into other Coq development environments\footnote{Indeed, the architecture of company-coq should be amenable to such cross-pollination: none of its features are Emacs-specific, and the collection of pre-processing scripts that it relies on to offer documentation, completion and snippets is freely available (along with their output).}; we hope that the CoqPL workshop will be a good venue to discuss it, and more generally to discuss the development of new editor features enhancing the experience of authors of Coq programs and proofs.
 
 \bibliographystyle{abbrvnat}
 \bibliography{workshop}
