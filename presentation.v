@@ -1,4 +1,4 @@
-(***     Company-Coq     ***)
+(***    Company-Coq    ***)
 
 (*+  Taking Proof General one step  +*)
 (*+      closer to a real IDE       +*)
@@ -10,8 +10,6 @@
 (*!                    Jan 23, 2016                    !*)
 
 (*!     https://github.com/cpitclaudel/company-coq     !*)
-
-
 (******************************************************************************)
 
 (*+ Intro +*)
@@ -32,7 +30,8 @@
 
     Most of this is portable to other IDEs! *)
 
-(** In this talk: a quick tour + a discussion of a few experimental directions. *)
+(** In this talk: a quick tour + a discussion of a few
+    experimental directions. *)
 
 (*! Please ask questions during the talk! !*)
 
@@ -63,26 +62,35 @@ Ltac MySimpleTactic :=
 (*!       (and snippets!)      !*)
 (*!        (and sources)       !*)
 
-(* Tactics (applin):    *) 
+(** Tactics (applin): *) 
 
-(* Vernacs (SLD):       *) 
+(** Vernacs (SLD): *) 
 
-(* Modules (C.N.C..D):  *) 
+(** Modules (C.N.C..D): *) 
 
-(* Identifiers (trunk): *) 
+(** Identifiers (trunk): *) 
 
-(* Seach results:       *)
-SearchAbout plus minus.
+(** Tactic notations: *)
+Tactic Notation "foo" constr(bar) "with" constr(baz) := idtac.
+
+(** Search results: *)
+SearchAbout plus.
+
 
 (******************************************************************************)
 
 (*+ Navigation +*)
 
-(** Browsing to source: *) 
+(** Browsing to source: *)
 
-(** Looking up documentation quickly: *) 
+(* minus *) 
 
-(** Outlines *) 
+(** Looking up documentation quickly: *)
+
+(* minus *) 
+
+(** Browsing with outlines: *)
+
 
 (******************************************************************************)
 
@@ -94,17 +102,18 @@ Lemma SmartIntros :
   forall A (x y z: A * A),
     x = y -> y = z -> x = z.
 Proof.
-  
+
 Abort.
 
 (** * Smart matches **)
 
 Definition MatchCases (n: nat) : nat.
-  
+
 Abort.
 
 (** * Snippets! **)
 
+(* mgw, Section, ... *) 
 
 
 (******************************************************************************)
@@ -135,15 +144,13 @@ Lemma inH: forall T n (t: T), inhabited (Tt (@MkLarge Type n T T)).
   intros; constructor; induction n; simpl; constructor; eauto. Qed.
 (* end hide *)
 
-Lemma LargeGoal : inhabited (Tt (@MkLarge Type 5 unit nat)).
+Lemma LargeGoal : inhabited (Tt (@MkLarge Type 3 unit nat)).
   (* begin hide *)
-  pose proof (inH unit 5 tt) as pr; simpl in *.
+  pose proof (inH unit 3 tt) as pr; simpl in *.
   Set Printing All.
   (* end hide *)
   Fail exact pr.
-
-  
-
+ 
   Unset Printing All.
 Abort.
 
@@ -159,10 +166,13 @@ Lemma my_plus_comm :
            (exists s, p + q + r < s) -> forall m n, n + m = m + n.
 Proof.
   induction m; intros.
-  - simpl.
+  - (* Base case (m = 0) *)
+    simpl.
     rewrite plus_0_r.
     apply eq_refl.
-  - idtac.
+  - (* Inductive case *)
+    idtac.
+
 Abort.
 
 (** If you don't want to extract lemmas, it's ok:
@@ -184,23 +194,23 @@ Abort.
 
 (*+     Terms as you type      +*)
 
-(*! Showign the evolution of a proof term as one !*)
+(*! Showing the evolution of a proof term as one !*)
 (*!            steps through a proof             !*)
 
-(* (require 'company-coq-term-builder) *)
+(* (load "company-coq-term-builder.el") *)
 
-Definition ExampleFunction : nat -> nat.
+Definition ExampleFunction (n: nat): nat.
 Proof.
   intros.
   refine (S _).
   refine (_ - 1).
 
   refine (3 * _).
-  destruct H.
+  destruct n.
   + refine (1 + _).
     apply 0.
   + refine (2 + _).
-    destruct H.
+    destruct n.
     * refine (3 + _).
       apply 0.
     * refine (4 + _).
@@ -218,9 +228,7 @@ Print ExampleFunction.
 (*!  What happens if we use Coq notations   !*)
 (*!         to produce LaTeX code?          !*)
 
-(** [nsum 0 n (fun x => f x)] ↦ [\sum_{x = 0}^n f(x)] *)
-
-(*!      Has anyone done this before?       !*)
+(*! [nsum 0 n (fun x => f x)] ↦ [\sum_{x = 0}^n f(x)] !*)
 
 (******************************************************************************)
 
@@ -238,7 +246,7 @@ Fixpoint nsum max f :=
 
 (** And we add a notation for it: *)
 
-Notation "'\ccNsum{' x '}{' max '}{' f '}'" := (nsum max (fun x => f)).
+Notation "'\nsum{' x '}{' max '}{' f '}'" := (nsum max (fun x => f)).
 
 (* begin hide *)
 Infix "\wedge" := and (at level 190, right associativity).
@@ -250,16 +258,21 @@ Infix "\times" := mult (at level 30).
 (* end hide *)
 
 (******************************************************************************)
+
 (*+ Then the magic happens! +*)
 
-(* (require 'company-coq-latex) *)
+(* (load "company-coq-latex.el") *)
 
-Lemma Gauss: forall n, 2 * (nsum n (fun x => x)) = n * (n + 1).
+Lemma Gauss:
+  forall n, 2 * (nsum n (fun x => x)) = n * (n + 1).
+Proof.
   intros.
   induction n.
-  - cbv [nsum].
+  - (* Base case *)
+    cbv [nsum].
     reflexivity.
-  - unfold nsum; fold nsum.
+  - (* Inductive case *)
+    unfold nsum; fold nsum.
     rewrite Mult.mult_plus_distr_l.
     rewrite IHn.
     ring.
@@ -399,14 +412,17 @@ Qed.
 (** Desiderata:
 
     * A documentation language for Gallina and Ltac
-      (coqdoc is litterate programming)
+      (coqdoc is litterate programming: lacks function signatures etc.)
 
     * A better IDE api
-      * A documented XML API
-      * A scripting language?
+      * A documented, supported XML API (Great efforts: PIDE and PeaCoq)
+      * A scripting language? Makes distributing plugins easier.
+        * LuaTeX
+        * FontForge
+        * Blender
       * Read-only views?
+      * Ltac debugger?
 
-   * 
   *)
 
 (** Next steps:
@@ -415,9 +431,9 @@ Qed.
 
     * Discuss various proposals: 
       * Structured documentation format
-      * Ltac profiler
+      * Ltac debugger
       * TeX notations
-      * … 
+      * …
 
     * Share with other IDEs! **)
 
@@ -427,6 +443,8 @@ Qed.
 
 (*!          Download company-coq at           !*)
 (*! https://github.com/cpitclaudel/company-coq !*)
+
+(*! (There's also a VM for artifact packaging, classes, etc.) !*)
 
 
 (** Many thanks to Pierre Courtieu (my co-author) for
