@@ -68,13 +68,16 @@ Ltac MySimpleTactic :=
 
 (** Modules (C.N.C..D): *) 
 
-(** Identifiers (trunk): *) 
+(** Identifiers (on trunk): *) 
 
 (** Tactic notations: *)
 Tactic Notation "foo" constr(bar) "with" constr(baz) := idtac.
 
+
 (** Search results: *)
-SearchAbout plus.
+Require Import List.
+SearchAbout length.
+
 
 
 (******************************************************************************)
@@ -83,11 +86,11 @@ SearchAbout plus.
 
 (** Browsing to source: *)
 
-(* minus *) 
+(* rev_append *) 
 
-(** Looking up documentation quickly: *)
+(** Looking up information quickly: *)
 
-(* minus *) 
+(* length *) 
 
 (** Browsing with outlines: *)
 
@@ -102,13 +105,13 @@ Lemma SmartIntros :
   forall A (x y z: A * A),
     x = y -> y = z -> x = z.
 Proof.
-
+  
 Abort.
 
 (** * Smart matches **)
 
 Definition MatchCases (n: nat) : nat.
-
+  
 Abort.
 
 (** * Snippets! **)
@@ -172,7 +175,7 @@ Proof.
     apply eq_refl.
   - (* Inductive case *)
     idtac.
-
+    
 Abort.
 
 (** If you don't want to extract lemmas, it's ok:
@@ -290,7 +293,7 @@ Infix "\le" := Qle (at level 100).
 Infix "\equiv" := Qeq (at level 100).
 Infix "\times" := Qmult (at level 30).
 Notation "\ccNot{ x }" := (not x) (at level 100).
-(* Notation "x '\not\equiv' y" := (not (Qeq x y)) (at level 100). *)
+Notation "x '\not\equiv' y" := (not (Qeq x y)) (at level 100).
 
 Lemma Qmult_Qdiv_fact :
   forall a b c, not (c == 0) -> a * (b / c) == (a * b) / c.
@@ -415,7 +418,7 @@ Qed.
       (coqdoc is litterate programming: lacks function signatures etc.)
 
     * A better IDE api
-      * A documented, supported XML API (Great efforts: PIDE and PeaCoq)
+      * A documented, supported XML API (Cool stuff: PIDE and PeaCoq)
       * A scripting language? Makes distributing plugins easier.
         * LuaTeX
         * FontForge
