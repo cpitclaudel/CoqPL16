@@ -7,7 +7,7 @@
 (*!         Pierre Courtieu (CNAM, Lab Cédric)         !*)
 
 (*!               CoqPL'16, St Petersburg              !*)
-(*!                    Jan 23, 2016                    !*)
+(*!                    Jan 23 2016                    !*)
 
 (*!     https://github.com/cpitclaudel/company-coq     !*)
 (******************************************************************************)
@@ -53,6 +53,8 @@ Ltac MySimpleTactic :=
 (* begin hide *) Require Import Omega. (* end hide *)
 
 (** Or with modifications: *)
+  
+  
 
 (******************************************************************************)
 
@@ -62,13 +64,20 @@ Ltac MySimpleTactic :=
 (*!       (and snippets!)      !*)
 (*!        (and sources)       !*)
 
-(** Tactics (applin): *) 
+(** Tactics (applin, refl): *) 
+
+
+(** Ltac (once): *) 
+
 
 (** Vernacs (SLD): *) 
 
+
 (** Modules (C.N.C..D): *) 
 
+
 (** Identifiers (on trunk): *) 
+
 
 (** Tactic notations: *)
 Tactic Notation "foo" constr(bar) "with" constr(baz) := idtac.
@@ -85,14 +94,16 @@ SearchAbout length.
 (*+ Navigation +*)
 
 (** Browsing to source: *)
-
 (* rev_append *) 
 
-(** Looking up information quickly: *)
 
+(** Looking up information quickly: *)
 (* length *) 
 
+
 (** Browsing with outlines: *)
+
+
 
 
 (******************************************************************************)
@@ -114,9 +125,20 @@ Definition MatchCases (n: nat) : nat.
   
 Abort.
 
+(** * Smart destruct (very very experimental) **)
+
+Inductive ExampleInductive :=
+| ExampleA : forall x y z: nat, x < y -> y < z -> ExampleInductive
+| ExampleB : forall a b c d: nat, a + b + c + d = 0 -> ExampleInductive.
+
+Definition Destruct (e: ExampleInductive) : nat.
+  
+Abort.
+
 (** * Snippets! **)
 
 (* mgw, Section, ... *) 
+
 
 
 (******************************************************************************)
@@ -131,7 +153,9 @@ Proof.
 
   intros.
   Fail omega.
-Abort.
+
+  eauto.
+Qed.
 
 (** Even if you know what an error means, sometimes it’s
     hard to parse. *)
@@ -153,7 +177,7 @@ Lemma LargeGoal : inhabited (Tt (@MkLarge Type 3 unit nat)).
   Set Printing All.
   (* end hide *)
   Fail exact pr.
- 
+  
   Unset Printing All.
 Abort.
 
@@ -184,14 +208,39 @@ Abort.
 (******************************************************************************)
 
 (*+ Experimental features +*)
+(*!         (mostly unreleased)        !*)
 
 (*!        Thinking a bit bigger        !*)
 
 (** What more can we do to make Coq more user-friendly
     (and beginner-friendly)?  
 
+    * Goal diffs
     * ‘Show Proof’ as you type
-    * LaTeX rendering **)
+    * LaTeX rendering 
+ 
+ *)
+
+
+(******************************************************************************)
+
+(*+         Goal diffs          +*)
+
+(* (load "company-coq-goal-diffs.el") *)
+
+Definition GoalDiffs :
+  forall n m: nat, forall p: id nat, n < m -> m <= p -> n <= p. 
+Proof.
+  intros m n.
+  intros p Hmn Hnp.
+  compute in (type of p).
+  compute in Hmn.
+  apply le_Sn_le in Hmn.
+  pose proof (le_trans _ _ _ Hmn Hnp).
+  assumption.
+Qed.
+
+(* (company-coq-goal-diffs -1) *)
 
 (******************************************************************************)
 
@@ -414,46 +463,54 @@ Qed.
 
 (** Desiderata:
 
-    * A documentation language for Gallina and Ltac
-      (coqdoc is litterate programming: lacks function signatures etc.)
+    * A structured documentation language for Gallina and Ltac
+      (coqdoc is litterate programming)
 
     * A better IDE api
-      * A documented, supported XML API (Cool stuff: PIDE and PeaCoq)
-      * A scripting language? Makes distributing plugins easier.
-        * LuaTeX
-        * FontForge
-        * Blender
-      * Read-only views?
-      * Ltac debugger?
+      * A documented, supported XML API
+      * A scripting language?
+        * LuaTeX, FontForge, Blender do it
+        * Read-only views w/ access to pure functions?
+          → reflection, state-preserving queries, ...
+        * Often no need for compiled plugins
+      * Ltac instrumentation?
 
-  *)
+    * Printing-only notations?
 
-(** Next steps:
+   Next steps:
 
-    * Get (more) feedback!
+    * Get (more) feedback! (1k!)
 
-    * Discuss various proposals: 
-      * Structured documentation format
-      * Ltac debugger
-      * TeX notations
-      * …
+    * Discuss discuss discuss
 
-    * Share with other IDEs! **)
+    * Cross-polination and sharing with other IDEs!
+      Plenty of cool projects: PIDE, PeaCoq, Coqoon    
+
+ *)
 
 (******************************************************************************)
 
-(*+    Thanks! Questions?    +*)
+(*+     Thanks! Questions?     +*)
 
-(*!          Download company-coq at           !*)
+(*!          All about company-coq:            !*)
 (*! https://github.com/cpitclaudel/company-coq !*)
+(*!  https://dx.doi.org/10.5281/zenodo.44331   !*)
 
-(*! (There's also a VM for artifact packaging, classes, etc.) !*)
+(*!         (There's even a tutorial!)         !*)
+
+(** Feel free to get in touch in person or by email, too! *)
 
 
-(** Many thanks to Pierre Courtieu (my co-author) for
+(** **************************************************
+    Many thanks to Pierre Courtieu (my co-author) for
     his work on Proof General, and to Jonathan Leivent
     and Jason Gross for their tireless bug reports and
-    suggestions! *)
+    suggestions!
+    ***************************************************)
+
+(** **************************************************
+    Many thanks to my reviewers and the CoqPL PC, too!
+    ***************************************************)
 
 (******************************************************************************)
 
