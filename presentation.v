@@ -1,7 +1,7 @@
 (***    Company-Coq    ***)
 
-(*+  Taking Proof General one step  +*)
-(*+      closer to a real IDE       +*)
+(*+  Taking Proof General one  +*)
+(*+      step closer to a real IDE       +*)
 
 (*!           Clément Pit-Claudel (MIT CSAIL)          !*)
 (*!         Pierre Courtieu (CNAM, Lab Cédric)         !*)
@@ -9,7 +9,9 @@
 (*!               CoqPL'16, St Petersburg              !*)
 (*!                    Jan 23 2016                    !*)
 
-(*!     https://github.com/cpitclaudel/company-coq     !*)
+(*!     http://github.com/cpitclaudel/company-coq     !*)
+
+
 (******************************************************************************)
 
 (*+ Intro +*)
@@ -23,15 +25,15 @@
 
     Company-Coq adds:
 
-    Smart auto-completion ∙ Offline docs ∙ Snippets
-    Code folding ∙ Prettified maths ∙ Lemma extraction
-    Quick peek ∙ Source browsing ∙ Help with errors
-    … and many other features
+    Smart auto-completion ∙ Offline docs
+    Snippets ∙ Code folding ∙ Prettified maths
+    Lemma extraction ∙ Quick peek ∙ Error docs
+    Source browsing ∙ plenty of other features
 
     Most of this is portable to other IDEs! *)
 
-(** In this talk: a quick tour + a discussion of a few
-    experimental directions. *)
+(** In this talk: a quick tour + a discussion of
+    a few experimental directions. *)
 
 (*! Please ask questions during the talk! !*)
 
@@ -53,7 +55,7 @@ Ltac MySimpleTactic :=
 (* begin hide *) Require Import Omega. (* end hide *)
 
 (** Or with modifications: *)
-  
+    
   
 
 (******************************************************************************)
@@ -76,11 +78,12 @@ Ltac MySimpleTactic :=
 (** Modules (C.N.C..D): *) 
 
 
-(** Identifiers (on trunk): *) 
-
+(** Identifiers (sig, on trunk): *) 
+  
 
 (** Tactic notations: *)
-Tactic Notation "foo" constr(bar) "with" constr(baz) := idtac.
+Tactic Notation "foo" constr(bar)
+       "with" constr(baz) := idtac.
 
 
 (** Search results: *)
@@ -125,22 +128,21 @@ Definition MatchCases (n: nat) : nat.
   
 Abort.
 
-(** * Smart destruct (very very experimental) **)
+(** * Smart destruct (very experimental) **)
 
 Inductive ExampleInductive :=
-| ExampleA : forall x y z: nat, x < y -> y < z -> ExampleInductive
-| ExampleB : forall a b c d: nat, a + b + c + d = 0 -> ExampleInductive.
+| ExampleA : forall x y z: nat,
+    x < y -> y < z -> ExampleInductive
+| ExampleB : forall a b c d: nat,
+    a + b + c + d = 0 -> ExampleInductive.
 
 Definition Destruct (e: ExampleInductive) : nat.
-  
+  destruct e as [x y z l l0 | a b c d e0].
 Abort.
 
 (** * Snippets! **)
 
 (* mgw, Section, ... *) 
-
-
-
 (******************************************************************************)
 
 (*+ Help with errors +*)
@@ -157,8 +159,8 @@ Proof.
   eauto.
 Qed.
 
-(** Even if you know what an error means, sometimes it’s
-    hard to parse. *)
+(** Even if you know what an error means,
+    sometimes it’s hard to parse. *)
 
 (* begin hide *)
 Inductive Tr {T} := TrL : T -> Tr | TrB : Tr -> Tr -> Tr.
@@ -171,7 +173,8 @@ Lemma inH: forall T n (t: T), inhabited (Tt (@MkLarge Type n T T)).
   intros; constructor; induction n; simpl; constructor; eauto. Qed.
 (* end hide *)
 
-Lemma LargeGoal : inhabited (Tt (@MkLarge Type 3 unit nat)).
+Lemma LargeGoal :
+  inhabited (Tt (@MkLarge Type 3 unit nat)).
   (* begin hide *)
   pose proof (inH unit 3 tt) as pr; simpl in *.
   Set Printing All.
@@ -185,12 +188,12 @@ Abort.
 
 (*+ Lemma extraction +*)
 
-(** Company-Coq can help you structure your proofs by
-    extracting lemmas: **)
+(** Company-Coq can help you structure your
+    proofs by extracting lemmas: **)
 
 Lemma my_plus_comm :
   forall p q r, (p < q /\ q < r) -> (p + q < q + r) ->
-           (exists s, p + q + r < s) -> forall m n, n + m = m + n.
+           (exists s, p < s) -> forall m n, n + m = m + n.
 Proof.
   induction m; intros.
   - (* Base case (m = 0) *)
@@ -199,11 +202,12 @@ Proof.
     apply eq_refl.
   - (* Inductive case *)
     idtac.
-    
+
 Abort.
 
-(** If you don't want to extract lemmas, it's ok:
-    company-coq knows how to fold and unfold bullets. *)
+(** And if you don't want to extract lemmas,
+    it's ok too: company-coq knows how to fold
+    and unfold bullets. *)
 
 (******************************************************************************)
 
@@ -212,13 +216,12 @@ Abort.
 
 (*!        Thinking a bit bigger        !*)
 
-(** What more can we do to make Coq more user-friendly
-    (and beginner-friendly)?  
+(** What more can we do to make Coq more
+    user-friendly (and beginner-friendly)?
 
-    * Goal diffs
-    * ‘Show Proof’ as you type
-    * LaTeX rendering 
- 
+    * Goal diffs 
+    * ‘Show Proof’ as you type 
+    * LaTeX rendering
  *)
 
 
@@ -246,14 +249,13 @@ Qed.
 
 (*+     Terms as you type      +*)
 
-(*! Showing the evolution of a proof term as one !*)
-(*!            steps through a proof             !*)
+(*! Showing the evolution of a proof term !*)
+(*!     as one steps through a proof      !*)
 
 (* (load "company-coq-term-builder.el") *)
 
 Definition ExampleFunction (n: nat): nat.
 Proof.
-  intros.
   refine (S _).
   refine (_ - 1).
 
@@ -280,7 +282,8 @@ Print ExampleFunction.
 (*!  What happens if we use Coq notations   !*)
 (*!         to produce LaTeX code?          !*)
 
-(*! [nsum 0 n (fun x => f x)] ↦ [\sum_{x = 0}^n f(x)] !*)
+(*! [nsum 0 n (fun x => f x)] !*)
+(*!   [\sum_{x = 0}^n f(x)] !*)
 
 (******************************************************************************)
 
@@ -298,7 +301,8 @@ Fixpoint nsum max f :=
 
 (** And we add a notation for it: *)
 
-Notation "'\nsum{' x '}{' max '}{' f '}'" := (nsum max (fun x => f)).
+Notation "'\nsum{' x '}{' max '}{' f '}'" :=
+  (nsum max (fun x => f)).
 
 (* begin hide *)
 Infix "\wedge" := and (at level 190, right associativity).
@@ -415,19 +419,25 @@ Proof with Qside.
   rewrite <- Qmult_le_l with (z := b * d)...
   rewrite Qmult_div_r...
   field_simplify; rewrite !Qdiv_1...
-  rewrite <- Qplus_le_l with (z := - b * d * a); ring_simplify.
-  rewrite <- Qplus_le_l with (z := - b * d * c); ring_simplify.
+  rewrite <- Qplus_le_l with (z := - b * d * a);
+    ring_simplify.
+  rewrite <- Qplus_le_l with (z := - b * d * c);
+    ring_simplify.
   Qside using Qsqr_0.
 Qed.
 
 (** And you can add tactic notations to the mix! 
     (but should you?) *)
 
+Tactic Notation "multiply" "each" "side" "by"
+       constr(term) :=
+  rewrite <- Qmult_le_l with (z := term).
+
+(* begin hide *)
 Tactic Notation "reduce" "addition" :=
   field_simplify.
-Tactic Notation "multiply" "each" "side" "by" constr(term) :=
-  rewrite <- Qmult_le_l with (z := term).
-Tactic Notation "cancel" "numerator" "and" "denominator" :=
+Tactic Notation "cancel" "numerator" "and"
+       "denominator" :=
   rewrite !Qmult_div_r.
 Tactic Notation "harmonize" "fractions" :=
   rewrite !Qmult_Qdiv_fact.
@@ -436,6 +446,7 @@ Tactic Notation "expand" "and" "collect" :=
 Tactic Notation "subtract" constr(term) "on" "each" "side" :=
   rewrite <- Qplus_le_l with (z := - term); ring_simplify.
 Tactic Notation "consequence" "of" constr(lemma) := Qside using lemma.
+(* end hide *)
 
 Lemma Qfracs_take_two :
   forall a b c d,
@@ -463,15 +474,17 @@ Qed.
 
 (** Desiderata:
 
-    * A structured documentation language for Gallina and Ltac
-      (coqdoc is litterate programming)
+    * A structured documentation language for
+      Gallina and Ltac (coqdoc is litterate
+      programming)
 
     * A better IDE api
       * A documented, supported XML API
       * A scripting language?
         * LuaTeX, FontForge, Blender do it
-        * Read-only views w/ access to pure functions?
-          → reflection, state-preserving queries, ...
+        * Read-only views w/ access to pure
+          functions?
+          → reflection, state-preserving queries
         * Often no need for compiled plugins
       * Ltac instrumentation?
 
@@ -479,7 +492,7 @@ Qed.
 
    Next steps:
 
-    * Get (more) feedback! (1k!)
+    * Get (more) feedback! (1k downloads!)
 
     * Discuss discuss discuss
 
@@ -493,24 +506,25 @@ Qed.
 (*+     Thanks! Questions?     +*)
 
 (*!          All about company-coq:            !*)
-(*! https://github.com/cpitclaudel/company-coq !*)
-(*!  https://dx.doi.org/10.5281/zenodo.44331   !*)
+(*! http://github.com/cpitclaudel/company-coq !*)
+(*!  http://dx.doi.org/10.5281/zenodo.44331   !*)
 
 (*!         (There's even a tutorial!)         !*)
 
-(** Feel free to get in touch in person or by email, too! *)
+(** Feel free to get in touch in person or by
+    email, too! *)
 
+(** ********************************************
+    Many thanks to Pierre Courtieu (my
+    co-author) for his work on Proof General,
+    and to Jonathan Leivent and Jason Gross for
+    their tireless bug reports and suggestions!
+    ********************************************)
 
-(** **************************************************
-    Many thanks to Pierre Courtieu (my co-author) for
-    his work on Proof General, and to Jonathan Leivent
-    and Jason Gross for their tireless bug reports and
-    suggestions!
-    ***************************************************)
-
-(** **************************************************
-    Many thanks to my reviewers and the CoqPL PC, too!
-    ***************************************************)
+(** ********************************************
+    Many thanks to my reviewers and the CoqPL
+    PC, too!
+    ********************************************)
 
 (******************************************************************************)
 
@@ -521,5 +535,5 @@ Qed.
 
 (* Local Variables: *)
 (* show-trailing-whitespace: nil *)
-(* fill-column: 56 *)
+(* fill-column: 48 *)
 (* End: *)
